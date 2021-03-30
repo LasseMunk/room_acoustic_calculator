@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/main.css">
+  <title>Room Acoustics</title>
+</head>
+<body>
+  <div class="container">
+    <header id="main-nav">
+      nav-link
+    </header>
+  </div>
+
+  <div class="container">
+    <section id="intro-section">
+      <div id="sabine-heading">
+        <h1> Explanation of Sabine's formula:</h1> <span id="sabine-formula">T = (0.161 * V) / A</span>
+      </div>
+        <ul id="sabine-explanation">
+          <li>T = Reverberation time in seconds</li>
+          <li>V = Volume in cubic meters (m^3)</li>
+          <li>A = Absorption in m2_sabine</li>
+        </ul>
+    </section>
+  </div>
+
+  <div class="container">
+    <div id="room-dimensions">
+
+      <section id="input-room-dim">
+        <h2 id="room-input-text">Room Dimensions in Meters</h2>
+        <div id="room-dimensions-flex">
+          <div class="room-inputs">
+            <label for="room-height">Room Height</label>
+            <input type="number" min="0" step="0.01" id="room-height" class="room-dimensions-input" placeholder="2.2" required>
+          </div>
+          <div class="room-inputs">
+            <label for="room-width">Room Width</label>
+            <input type="number" min="0" step="0.01" id="room-width" class="room-dimensions-input" placeholder="2.5" required>
+          </div>
+          <div class="room-inputs">
+            <label for="room-width">Room Length</label>
+            <input type="number" min="0" step="0.01" id="room-length" class="room-dimensions-input" placeholder="4.5" required>
+          </div>
+        </div>
+      </section>
+
+      <section id="input-room-dim">
+        <h2 id="room-input-text">Volume (m^3)</h2>
+        <div class="center-center">
+          <p id="calculated-m2">30100,95</p>
+        </div>
+      </section>
+      
+      <section id="input-room-dim">
+        <h2 id="room-input-text">Measured reverberence pr. octave in seconds</h2>
+        <div id="measured-reverberance-flex">
+          <div class="measured-rev-form">
+            <label for="63hz">63 Hz</label>
+            <input type="number" min="0" step="0.01" class="room-dimensions-input" placeholder="4.5" required>
+          </div>
+          <div class="measured-rev-form">
+            <label for="125hz">125 Hz</label>
+            <input type="number" min="0" step="0.01" class="room-dimensions-input" placeholder="4.5" required>
+          </div>
+          <div class="measured-rev-form">
+            <label for="250hz">250 Hz</label>
+            <input type="number" min="0" step="0.01" class="room-dimensions-input" placeholder="4.5" required>
+          </div>
+          <div class="measured-rev-form">
+            <label for="500hz">500 Hz</label>
+            <input type="number" min="0" step="0.01" class="room-dimensions-input" placeholder="4.5" required>
+          </div>
+          <div class="measured-rev-form">
+            <label for="1000hz">1000 Hz</label>
+            <input type="number" min="0" step="0.01" class="room-dimensions-input" placeholder="4.5" required>
+          </div>
+          <div class="measured-rev-form">
+            <label for="2000hz">2000 Hz</label>
+            <input type="number" min="0" step="0.01" class="room-dimensions-input" placeholder="4.5" required>
+          </div>
+          <div class="measured-rev-form">
+            <label for="4000hz">4000 Hz</label>
+            <input type="number" min="0" step="0.01" class="room-dimensions-input" placeholder="4.5" required>
+          </div>
+          <div class="measured-rev-form">
+            <label for="8000hz">8000 Hz</label>
+            <input type="number" min="0" step="0.01" class="room-dimensions-input" placeholder="4.5" required>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="js/app.js" type="text/javascript"></script>
+</body>
+</html>

@@ -1,0 +1,118 @@
+.container {
+  max-width: 1280px;
+  margin: auto;
+  padding: 1rem 1rem;
+}
+
+.center-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-size: 10px;
+}
+
+body {
+  font-size: 1rem;
+  color: #333;
+  background-color: #f4f4f4;
+  font-family: "Courier New", Courier, monospace;
+}
+
+h1 {
+  font-size: 2rem;
+  text-transform: uppercase;
+}
+
+li {
+  list-style: none;
+}
+
+label {
+  font-size: 1.2rem;
+  width: 70%;
+}
+
+input {
+  padding-left: 1rem;
+  width: 30%;
+  text-align: center;
+  font-size: 1.2rem;
+  background: #f4f4f4;
+  border: 1px dashed #ff0000;
+}
+
+input:focus {
+  text-align: center;
+  outline: none;
+  border: 1px solid #ff0000;
+}
+
+#main-nav {
+  font-size: 1.6rem;
+  color: #ff0000;
+}
+
+#intro-section #sabine-heading {
+  display: flex;
+  align-items: center;
+}
+
+#intro-section #sabine-heading #sabine-formula {
+  font-size: 1.6rem;
+  margin-left: 1rem;
+}
+
+#intro-section #sabine-explanation li {
+  padding-top: 0.2rem;
+  font-size: 1.2rem;
+}
+
+#room-dimensions {
+  display: flex;
+}
+
+#room-dimensions h2 {
+  font-size: 1.2rem;
+}
+
+#room-dimensions #input-room-dim {
+  border: 1px solid #ff0000;
+  padding: 1rem;
+}
+
+#room-dimensions #input-room-dim .room-inputs {
+  margin-top: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+#room-dimensions #input-room-dim #calculated-m2 {
+  font-size: 2rem;
+  padding-bottom: 0.9rem;
+}
+
+#room-dimensions #input-room-dim #measured-reverberance-flex {
+  display: flex;
+  flex-direction: row;
+}
+
+#room-dimensions #input-room-dim #measured-reverberance-flex .measured-rev-form {
+  display: flex;
+  flex-direction: column;
+}
+
+#room-dimensions #input-room-dim #measured-reverberance-flex .measured-rev-form label,
+#room-dimensions #input-room-dim #measured-reverberance-flex .measured-rev-form input {
+  width: 80%;
+  text-align: center;
+}
