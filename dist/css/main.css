@@ -22,7 +22,7 @@
 body {
   font-size: 1rem;
   color: #333;
-  background-color: #f4f4f4;
+  background-color: #f9eacb;
   font-family: "Courier New", Courier, monospace;
 }
 
@@ -45,7 +45,7 @@ input {
   width: 30%;
   text-align: center;
   font-size: 1.2rem;
-  background: #f4f4f4;
+  background: #f9eacb;
   border: 1px dashed #ff0000;
 }
 
