@@ -1,7 +1,8 @@
 .container {
-  max-width: 1280px;
+  width: 100vw;
+  max-width: 500px;
   margin: auto;
-  padding: 1rem 1rem;
+  padding: 0.5rem 2rem;
 }
 
 .center-center {
@@ -31,6 +32,11 @@ h1 {
   text-transform: uppercase;
 }
 
+h2 {
+  font-size: 1.4rem;
+  text-transform: uppercase;
+}
+
 li {
   list-style: none;
 }
@@ -41,7 +47,6 @@ label {
 }
 
 input {
-  padding-left: 1rem;
   width: 30%;
   text-align: center;
   font-size: 1.2rem;
@@ -58,6 +63,11 @@ input:focus {
 #main-nav {
   font-size: 1.6rem;
   color: #ff0000;
+  padding-top: 0.5rem;
+}
+
+#intro-section {
+  width: 100%;
 }
 
 #intro-section #sabine-heading {
@@ -66,29 +76,36 @@ input:focus {
 }
 
 #intro-section #sabine-heading #sabine-formula {
-  font-size: 1.6rem;
-  margin-left: 1rem;
+  font-size: 1.4rem;
+  padding-left: 1rem;
+}
+
+#intro-section #sabine-explanation {
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 #intro-section #sabine-explanation li {
-  padding-top: 0.2rem;
+  padding-top: 0.3rem;
   font-size: 1.2rem;
 }
 
-#room-dimensions {
+#room-dimensions-section {
   display: flex;
 }
 
-#room-dimensions h2 {
+#room-dimensions-section h2 {
   font-size: 1.2rem;
+  text-align: center;
 }
 
-#room-dimensions #input-room-dim {
-  border: 1px solid #ff0000;
+#room-dimensions-section #input-room-dim-container, #room-dimensions-section #calc-room-dim-container {
+  border: 1px dashed #ff0000;
   padding: 1rem;
+  width: 65%;
 }
 
-#room-dimensions #input-room-dim .room-inputs {
+#room-dimensions-section #input-room-dim-container .room-inputs, #room-dimensions-section #calc-room-dim-container .room-inputs {
   margin-top: 0.5rem;
   display: flex;
   justify-content: space-between;
@@ -96,23 +113,58 @@ input:focus {
   width: 100%;
 }
 
-#room-dimensions #input-room-dim #calculated-m2 {
+#room-dimensions-section #calc-room-dim-container {
+  border-left: none;
+  width: 35%;
+}
+
+#room-dimensions-section #calc-room-dim-container #calculated-m2 {
   font-size: 2rem;
   padding-bottom: 0.9rem;
 }
 
-#room-dimensions #input-room-dim #measured-reverberance-flex {
+#input-measured-t60-section {
+  border: 1px dashed #ff0000;
+  border-top: none;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
 }
 
-#room-dimensions #input-room-dim #measured-reverberance-flex .measured-rev-form {
+#input-measured-t60-section h2 {
+  font-size: 1.2rem;
+}
+
+#input-measured-t60-section #measured-reverberance-flex {
   display: flex;
   flex-direction: column;
 }
 
-#room-dimensions #input-room-dim #measured-reverberance-flex .measured-rev-form label,
-#room-dimensions #input-room-dim #measured-reverberance-flex .measured-rev-form input {
+#input-measured-t60-section #measured-reverberance-flex #measured-reverberance-63to500Hz,
+#input-measured-t60-section #measured-reverberance-flex #measured-reverberance-1000to8000Hz {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 0.75rem;
+}
+
+#input-measured-t60-section #measured-reverberance-flex .measured-rev-form {
+  display: flex;
+  flex-direction: column;
+}
+
+#input-measured-t60-section #measured-reverberance-flex .measured-rev-form label,
+#input-measured-t60-section #measured-reverberance-flex .measured-rev-form input {
   width: 80%;
   text-align: center;
+}
+
+#chart-section {
+  width: 100%;
+  height: 300px;
+  color: #333;
+  border: 1px dashed #ff0000;
+  border-top: none;
 }
