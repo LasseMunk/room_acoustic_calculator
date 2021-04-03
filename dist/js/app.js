@@ -16,27 +16,27 @@ https://www.researchgate.net/post/Is_there_a_mathematical_formulation_of_the_Sch
 // // Event Listeners
 // roomHeight = document.getElementById('room-height').addEventListener('submit', function(e){ } );
 
-const roomDims = {
-  h: 0,
-  w: 0,
-  l: 0
-}
+// const roomDims = {
+//   h: 0,
+//   w: 0,
+//   l: 0
+// }
 
-const calcH = document.getElementById("room-height").addEventListener('input', calculateRoomVolume());
+// const calcH = document.getElementById("room-height").addEventListener('input', calculateRoomVolume());
 
-function calculateRoomVolume (e, dim) {
-  console.log(e, dim);
-  if (typeof e.target.value === 'number' && dim === 'h') {                  
-    roomDims.h = e.target.value;    
-    const volume = roomDims.h * roomDims.w * roomDims.l;
-    if (volume > 0) {
-      console.log(`Volume is ${volume}`);
-      return volume;
-    }
-  } else {
-    alert('please only input numbers');
-  } 
-}
+// function calculateRoomVolume (e, dim) {
+//   console.log(e, dim);
+//   if (typeof e.target.value === 'number' && dim === 'h') {                  
+//     roomDims.h = e.target.value;    
+//     const volume = roomDims.h * roomDims.w * roomDims.l;
+//     if (volume > 0) {
+//       console.log(`Volume is ${volume}`);
+//       return volume;
+//     }
+//   } else {
+//     alert('please only input numbers');
+//   } 
+// }
 
 // The Canvas
 
@@ -113,9 +113,99 @@ const chart = new Chart(ctx, {
   }
 });
 
-function addNewMaterial() {
-  const matSection = document.getElementById("materials-section");
+class Material {
+  constructor() {
+    this.addedMaterials = []; // is array of names
+  }
 
+  // 
+  addMaterial(name, a63, a125, a250, a500, a1k, a2k, a4k, a8k) {
+    const matSection = document.getElementById("materials-section");
+
+    this.material = [name, a63, a125, a250, a500, a1k, a2k, a4k, a8k];
+    
+
+    const section = document.createElement('section');
+
+    if(typeof name === 'string') {
+      const now = new Date();
+      section.id = `${name}_${now.getHours()}${now.getMinutes()}${now.getSeconds()}`; // give unique identifier
+      this.material[0] = section.id;
+
+      section.innerHTML = `
+      <div class="new-material">
+        
+        <header class="new-material-header">
+          <h2 id="material-name">${name}</h2>
+          <a href="#" class="delete">Delete Material</a>
+        </header>
+
+        <div class="material-flex">
+          <div class="material-63to500Hz">
+            <div class="material-form">
+              <label for="63hz">63 Hz</label>
+              <input type="number" min="0" step="0.01" class="material-input" value="${a63}" required readonly>
+            </div>
+            <div class="material-form">
+              <label for="125hz">125 Hz</label>
+              <input type="number" min="0" step="0.01" class="material-input" value="${a125}" required readonly>
+            </div>
+            <div class="material-form">
+              <label for="250hz">250 Hz</label>
+              <input type="number" min="0" step="0.01" class="material-input" value="${a250}" required readonly>
+            </div>
+            <div class="material-form">
+              <label for="500hz">500 Hz</label>
+              <input type="number" min="0" step="0.01" class="material-input" value="${a500}" required readonly>
+            </div>
+          </div>
+          <div class="material-1000to8000Hz">
+            <div class="material-form">
+              <label for="1000hz">1 kHz</label>
+              <input type="number" min="0" step="0.01" class="material-input" value="${a1k}" required readonly>
+            </div>
+            <div class="material-form">
+              <label for="2000hz">2 kHz</label>
+              <input type="number" min="0" step="0.01" class="material-input" value="${a2k}" required readonly>
+            </div>
+            <div class="material-form">
+              <label for="4000hz">4 kHz</label>
+              <input type="number" min="0" step="0.01" class="material-input" value="${a4k}" required readonly>
+            </div>
+            <div class="material-form">
+              <label for="8000hz">8 kHz</label>
+              <input type="number" min="0" step="0.01" class="material-input" value="${a8k}" required readonly>
+            </div>
+          </div>
+        </div>   
+      </div>
+      `;
+
+      
+      // this.addedMaterials.push(this.material);
+
+      matSection.appendChild(section);
+    } else {console.log('name is not a string');}
+  }
+
+  deleteMaterial(target) {
+    if(target.className === 'delete') {
+      // link > header > div
+      target.parentElement.parentElement.remove();
+    }
+  }
 }
 
-console.log(10,1 * 2);
+const materials = new Material();
+
+
+// EVENT LISTENERS
+document.getElementById('thebtn').addEventListener('click',function(e) {
+  materials.addMaterial(`${Math.random()}`, 1.5,	1.3,	0.8,	0.7,	0.7,	0.6,	0.5,	0.4);
+  e.preventDefault();
+}, false);
+
+document.querySelector('#materials-section').addEventListener('click', function(e) {
+  materials.deleteMaterial(e.target);
+  e.preventDefault();
+})

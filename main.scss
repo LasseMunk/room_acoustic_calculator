@@ -107,6 +107,64 @@ input:focus {
   }
 }
 
+.material-flex {
+  display: flex;
+  flex-direction: column;
+
+  .material-63to500Hz,
+  .material-1000to8000Hz {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 0.75rem;
+  }
+  .material-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    label,
+    input {
+      width: 80%;
+      text-align: center;
+    }
+  }
+}
+
+.new-material {
+  border: 1px dashed $color-highlight;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem 0 2rem 0;
+  padding: 1rem;
+
+  header {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+
+    h2 {
+      font-size: $section-h2-fontSize;
+    }
+
+    a {
+      text-decoration: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0.3rem;
+
+      color: $color-background;
+      background: $color-highlight;
+      font-size: $section-h2-fontSize;
+      font-weight: bold;
+    }
+  }
+}
+
 #input-measured-t60-section {
   border: 1px dashed $color-highlight;
   border-top: none;
@@ -119,29 +177,6 @@ input:focus {
   h2 {
     font-size: $section-h2-fontSize;
   }
-
-  #measured-reverberance-flex {
-    display: flex;
-    flex-direction: column;
-
-    #measured-reverberance-63to500Hz,
-    #measured-reverberance-1000to8000Hz {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding-top: 0.75rem;
-    }
-    .measured-rev-form {
-      display: flex;
-      flex-direction: column;
-
-      label,
-      input {
-        width: 80%;
-        text-align: center;
-      }
-    }
-  }
 }
 
 #chart-section {
@@ -150,4 +185,30 @@ input:focus {
   color: $color-dark;
   border: 1px dashed $color-highlight;
   border-top: none;
+}
+
+#materials-section {
+  width: 100%;
+
+  #addMaterial-btn {
+    width: 100%;
+    margin: 2rem 0 2rem 0;
+    display: flex;
+    justify-content: center;
+
+    a,
+    a:active,
+    a:hover,
+    a:visited {
+      text-decoration: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+
+      border: 2px dashed red;
+      color: $color-dark;
+      font-size: 20px;
+    }
+  }
 }
