@@ -25,6 +25,12 @@ h2 {
   font-size: 1.4rem;
   text-transform: uppercase;
 }
+h3 {
+  font-size: 0.9rem;
+  font-weight: normal;
+  color: $color-highlight;
+  text-align: center;
+}
 
 li {
   list-style: none;
@@ -103,6 +109,7 @@ input:focus {
     #calculated-m2 {
       font-size: 2rem;
       padding-bottom: 0.9rem;
+      text-align:center;
     }
   }
 }
@@ -142,9 +149,24 @@ input:focus {
 
   header {
     width: 100%;
-    display: flex;
+    display: grid;
     justify-content: space-evenly;
     align-items: center;
+
+    .material-name {
+      grid-area: mat-name;
+    }
+    .material-delete-button {
+      grid-area: mat-del-but;
+    }
+    .material-input-text {
+      padding-top: 1rem;
+      grid-area: mat-input-text;
+    }
+
+    grid-template-areas:
+      "mat-name mat-del-but"
+      "mat-input-text mat-input-text";
 
     h2 {
       font-size: $section-h2-fontSize;

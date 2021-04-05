@@ -32,18 +32,19 @@
     <section id="room-dimensions-section">
       <div id="input-room-dim-container">
         <h2 id="room-input-text">Room Dimensions in Meters</h2>
+        <h3 id="room-input-text">only numbers separeted by . (dot)</h3>
         <div id="room-dimensions-flex">
           <div class="room-inputs">
             <label for="room-height">Room Height</label>
-            <input type="number" pattern="[0-9]+([,\.][0-9]+)?" title="invalid input" min="0" step="0.01" id="room-height" class="room-dimensions-input" placeholder="2.2" required>
+            <input type="number" pattern="[0-9]+([,\.][0-9]+)?" title="invalid input" min="0" step="0.01" id="room-height" class="room-dimensions-input" placeholder="0.0" required>
           </div>
           <div class="room-inputs">
             <label for="room-width">Room Width</label>
-            <input type="number" pattern="[0-9]+([,\.][0-9]+)?" min="0" step="0.01" id="room-width" class="room-dimensions-input" placeholder="2.5" required>
+            <input type="number" pattern="[0-9]+([,\.][0-9]+)?" min="0" step="0.01" id="room-width" class="room-dimensions-input" placeholder="0.0" required>
           </div>
           <div class="room-inputs">
             <label for="room-width">Room Length</label>
-            <input type="number" pattern="[0-9]+([,\.][0-9]+)?" min="0" step="0.01" id="room-length" class="room-dimensions-input" placeholder="4.5" required>
+            <input type="number" pattern="[0-9]+([,\.][0-9]+)?" min="0" step="0.01" id="room-length" class="room-dimensions-input" placeholder="0.0" required>
           </div>
         </div>
       </div>
@@ -51,48 +52,49 @@
       <div id="calc-room-dim-container">
         <h2 id="room-input-text">Volume (m^3)</h2>
         <div class="center-center">
-            <p id="calculated-m2">24.75</p>
+            <p id="calculated-m2">0.0</p>
         </div>
       </div>
     </section>
 
   <section id="input-measured-t60-section">
     <h2 id="room-input-text">Measured T60 pr. octave in seconds</h2>
+    <h3 id="room-input-text">only numbers separeted by . (dot)</h3>
     <div class="material-flex">
       <div class="material-63to500Hz">
         <div class="material-form">
           <label for="63hz">63 Hz</label>
-          <input type="number" min="0" step="0.01" class="room-dimensions-input" placeholder="4.5" required>
+          <input type="number" min="0" step="0.01" id="t60_63" class="room-t60-input" placeholder="0.0" required>
         </div>
         <div class="material-form">
           <label for="125hz">125 Hz</label>
-          <input type="number" min="0" step="0.01" class="room-dimensions-input" placeholder="4.5" required>
+          <input type="number" min="0" step="0.01" id="t60_125" class="room-t60-input" placeholder="0.0" required>
         </div>
         <div class="material-form">
           <label for="250hz">250 Hz</label>
-          <input type="number" min="0" step="0.01" class="room-dimensions-input" placeholder="4.5" required>
+          <input type="number" min="0" step="0.01" id="t60_250" class="room-t60-input" placeholder="0.0" required>
         </div>
         <div class="material-form">
           <label for="500hz">500 Hz</label>
-          <input type="number" min="0" step="0.01" class="room-dimensions-input" placeholder="4.5" required>
+          <input type="number" min="0" step="0.01" id="t60_500" class="room-t60-input" placeholder="0.0" required>
         </div>
       </div>
       <div class="material-1000to8000Hz">
         <div class="material-form">
           <label for="1000hz">1 kHz</label>
-          <input type="number" min="0" step="0.01" class="room-dimensions-input" placeholder="4.5" required>
+          <input type="number" min="0" step="0.01" id="t60_1000" class="room-t60-input" placeholder="0.0" required>
         </div>
         <div class="material-form">
           <label for="2000hz">2 kHz</label>
-          <input type="number" min="0" step="0.01" class="room-dimensions-input" placeholder="4.5" required>
+          <input type="number" min="0" step="0.01" id="t60_2000" class="room-t60-input" placeholder="0.0" required>
         </div>
         <div class="material-form">
           <label for="4000hz">4 kHz</label>
-          <input type="number" min="0" step="0.01" class="room-dimensions-input" placeholder="4.5" required>
+          <input type="number" min="0" step="0.01" id="t60_4000" class="room-t60-input" placeholder="0.0" required>
         </div>
         <div class="material-form">
           <label for="8000hz">8 kHz</label>
-          <input type="number" min="0" step="0.01" class="room-dimensions-input" placeholder="4.5" required>
+          <input type="number" min="0" step="0.01" id="t60_8000" class="room-t60-input" placeholder="0.0" required>
         </div>
       </div>
     </div>

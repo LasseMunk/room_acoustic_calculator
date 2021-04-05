@@ -9,38 +9,102 @@ https://www.researchgate.net/post/Is_there_a_mathematical_formulation_of_the_Sch
 
 */
 
-// const roomHeight = 0,
-//       roomWidth = 0,
-//       roomLength = 0;
 
-// // Event Listeners
-// roomHeight = document.getElementById('room-height').addEventListener('submit', function(e){ } );
+/* --- ROOM DIMENSIONS INPUT AND CALC --- */
 
-// const roomDims = {
-//   h: 0,
-//   w: 0,
-//   l: 0
-// }
+const room = {
+  h: 0,
+  w: 0,
+  l: 0,
+  volume: 0,
+  t60: [0, 0, 0, 0, 0, 0, 0, 0]
+}
 
-// const calcH = document.getElementById("room-height").addEventListener('input', calculateRoomVolume());
+const aMaterials = [];
 
-// function calculateRoomVolume (e, dim) {
-//   console.log(e, dim);
-//   if (typeof e.target.value === 'number' && dim === 'h') {                  
-//     roomDims.h = e.target.value;    
-//     const volume = roomDims.h * roomDims.w * roomDims.l;
-//     if (volume > 0) {
-//       console.log(`Volume is ${volume}`);
-//       return volume;
-//     }
-//   } else {
-//     alert('please only input numbers');
-//   } 
-// }
+document.getElementById("room-height")
+  .addEventListener('change', function (e) { calculateRoomVolume(e, 'h'); });
+document.getElementById("room-width")
+  .addEventListener('change', function (e) { calculateRoomVolume(e, 'w'); });
+document.getElementById("room-length")
+  .addEventListener('change', function (e) { calculateRoomVolume(e, 'l'); });
 
-// The Canvas
+function calculateRoomVolume (e, dim) {
 
-// chart.js
+  const inputValueAsFloat = parseFloat(e.target.value);
+  // alert if less than 1 - very narrow room
+  
+  if (typeof inputValueAsFloat === 'number' && dim === 'h') {                  
+    room.h = inputValueAsFloat;    
+    room.volume = room.h * room.w * room.l;
+  } 
+  if (typeof inputValueAsFloat === 'number' && dim === 'w') {                  
+    room.w = inputValueAsFloat;    
+    room.volume = room.h * room.w * room.l;
+  } 
+  if (typeof inputValueAsFloat === 'number' && dim === 'l') {                  
+    room.l = inputValueAsFloat;    
+    room.volume = room.h * room.w * room.l;
+  } 
+  if (room.volume > 5) {
+    room.volume = room.volume.toFixed(2);
+    document.getElementById("calculated-m2").innerHTML = `${room.volume}`;
+    return room.volume;
+  } else {
+    document.getElementById("calculated-m2").innerHTML = `Check values`;
+  }
+}
+
+/* --- T60 INPUT AND CALC --- */ 
+
+document.querySelectorAll('.room-t60-input').forEach(item => {
+  item.addEventListener('change', e => {
+    let idAsInt = e.target.id.split("t60_");
+    idAsInt = parseInt(idAsInt[1]);
+
+    let eValueAsFloat = parseFloat(e.target.value);
+
+    if (typeof eValueAsFloat === 'number' && eValueAsFloat > 0) {
+      switch (idAsInt) {
+        case 63:
+          room.t60[0] = parseFloat(e.target.value);
+          break;
+        case 125:
+          room.t60[1] = parseFloat(e.target.value);
+          break;
+        case 250:
+          room.t60[2] = parseFloat(e.target.value);
+          break;
+        case 500:
+          room.t60[3] = parseFloat(e.target.value);
+          break;
+        case 1000:
+          room.t60[4] = parseFloat(e.target.value);
+          break;
+        case 2000:
+          room.t60[5] = parseFloat(e.target.value);
+          break;
+        case 4000:
+          room.t60[6] = parseFloat(e.target.value);
+          break;
+        case 8000:
+          room.t60[7] = parseFloat(e.target.value);
+          break;
+      }
+    } 
+    updateGraphMeasured();
+    
+  })
+})
+
+function updateGraphMeasured() {
+  for(let i = 0; i < chart.data.datasets[1].data.length; i++) {
+    chart.data.datasets[1].data[i] = room.t60[i];
+  }
+  chart.update();
+}
+
+/* --- CHART SECTION --- */
 const ctx = document.getElementById("chart-canvas").getContext('2d');
 // ctx.translate(0.5, 0.5);
 
@@ -56,20 +120,22 @@ const chart = new Chart(ctx, {
       
       datasets: [ {
         label: 'CORRECTED', // Name the series
-        data: [0.6,	0.5,	0.5,	0.5,	0.4,	0.4,	0.4,	0.4], // Specify the data values array
+        data: [0.0,	0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], // Specify the data values array
         fill: false,
         // before #4CAF50
         borderColor: '#34b334', // Add custom color border (Line)
         backgroundColor: '#34b334', // Add custom color background (Points and Fill)
-        borderWidth: 3 // Specify bar border width
+        borderWidth: 3, // Specify bar border width
+        tension: 0.1
     },
         {
           label: 'MEASURED', // Name the series
-          data: [1.5,	1.3,	0.8,	0.7,	0.7,	0.6,	0.5,	0.4], // Specify the data values array
+          data: [0.0,	0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], // Specify the data values array
           fill: false,
           borderColor: '#FF0000', // Add custom color border (Line)
           backgroundColor: '#FF0000', // Add custom color background (Points and Fill)
-          borderWidth: 2 // Specify bar border width
+          borderWidth: 2, // Specify bar border width
+          tension: 0.1
       },
                 {
           label: 'MAX', // Name the series
@@ -77,7 +143,8 @@ const chart = new Chart(ctx, {
           fill: false,
           borderColor: '#656565', // Add custom color border (Line)
           backgroundColor: '#656565', // Add custom color background (Points and Fill)
-          borderWidth: 1 // Specify bar border width
+          borderWidth: 1, // Specify bar border width
+          tension: 0.0
       },
                 {
           label: 'MIN', // Name the series
@@ -86,7 +153,8 @@ const chart = new Chart(ctx, {
           fill: false,
           borderColor: '#656565', // Add custom color border (Line)
           backgroundColor: '#656565', // Add custom color background (Points and Fill)
-          borderWidth: 1 // Specify bar border width
+          borderWidth: 1, // Specify bar border width
+          tension: 0.0
       }]
   },
   options: {
@@ -113,6 +181,8 @@ const chart = new Chart(ctx, {
   }
 });
 
+/* --- MATERIALS SECTION --- */
+
 class Material {
   constructor() {
     this.addedMaterials = []; // is array of names
@@ -136,9 +206,10 @@ class Material {
       <div class="new-material">
         
         <header class="new-material-header">
-          <h2 id="material-name">${name}</h2>
-          <a href="#" class="delete">Delete Material</a>
-        </header>
+          <h2 class="material-name">${name}</h2>
+          <a class="material-delete-button" href="#" class="delete">Delete Material</a>
+          <h3 class="material-input-text">only numbers separeted by . (dot)</h3>
+          </header>
 
         <div class="material-flex">
           <div class="material-63to500Hz">
