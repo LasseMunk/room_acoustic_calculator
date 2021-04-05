@@ -131,31 +131,6 @@ input:focus {
   text-align: center;
 }
 
-.material-flex {
-  display: flex;
-  flex-direction: column;
-}
-
-.material-flex .material-63to500Hz,
-.material-flex .material-1000to8000Hz {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding-top: 0.75rem;
-}
-
-.material-flex .material-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.material-flex .material-form label,
-.material-flex .material-form input {
-  width: 80%;
-  text-align: center;
-}
-
 .new-material {
   border: 1px dashed #ff0000;
   display: flex;
@@ -168,23 +143,9 @@ input:focus {
 
 .new-material header {
   width: 100%;
-  display: grid;
+  display: flex;
   justify-content: space-evenly;
   align-items: center;
-  grid-template-areas: "mat-name mat-del-but" "mat-input-text mat-input-text";
-}
-
-.new-material header .material-name {
-  grid-area: mat-name;
-}
-
-.new-material header .material-delete-button {
-  grid-area: mat-del-but;
-}
-
-.new-material header .material-input-text {
-  padding-top: 1rem;
-  grid-area: mat-input-text;
 }
 
 .new-material header h2 {
@@ -201,6 +162,55 @@ input:focus {
   background: #ff0000;
   font-size: 1.2rem;
   font-weight: bold;
+}
+
+.new-material .material-input-flex {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+}
+
+.new-material .material-input-flex .material-input-units-flex {
+  text-align: left;
+  padding-top: 0.75rem;
+  padding-left: 0.5rem;
+  width: 10%;
+}
+
+.new-material .material-input-flex .material-input-units-flex .material-input-units-top {
+  padding-bottom: 0.9rem;
+}
+
+.new-material .material-input-flex .material-input-units-flex ul li {
+  font-size: 1.2rem;
+}
+
+.new-material .material-input-flex .material-input-a-flex {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.new-material .material-input-flex .material-input-a-flex .material-63to500Hz,
+.new-material .material-input-flex .material-input-a-flex .material-1000to8000Hz {
+  display: flex;
+  padding-top: 0.75rem;
+}
+
+.new-material .material-input-flex .material-input-a-flex .material-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.new-material .material-input-flex .material-input-a-flex .material-form label,
+.new-material .material-input-flex .material-input-a-flex .material-form input {
+  width: 100%;
+  text-align: center;
+  margin: 0 0.75rem;
 }
 
 #input-measured-t60-section {

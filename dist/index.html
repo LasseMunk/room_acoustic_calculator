@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Simple room acoustic calculator and construction planner">
+  <meta name="keywords" content="Room Acoustics, DIY, Sabine, calculator, construction, sound studio">
+  <meta name="author" content="Lasse Munk">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet"> -->
   <link rel="stylesheet" href="css/main.css">
@@ -32,7 +35,7 @@
     <section id="room-dimensions-section">
       <div id="input-room-dim-container">
         <h2 id="room-input-text">Room Dimensions in Meters</h2>
-        <h3 id="room-input-text">only numbers separeted by . (dot)</h3>
+        <h3 id="room-input-text">only numbers separated by . (dot)</h3>
         <div id="room-dimensions-flex">
           <div class="room-inputs">
             <label for="room-height">Room Height</label>
@@ -59,42 +62,42 @@
 
   <section id="input-measured-t60-section">
     <h2 id="room-input-text">Measured T60 pr. octave in seconds</h2>
-    <h3 id="room-input-text">only numbers separeted by . (dot)</h3>
+    <h3 id="room-input-text">only numbers separated by . (dot)</h3>
     <div class="material-flex">
       <div class="material-63to500Hz">
         <div class="material-form">
           <label for="63hz">63 Hz</label>
-          <input type="number" min="0" step="0.01" id="t60_63" class="room-t60-input" placeholder="0.0" required>
+          <input type="number" min="0" step="0.01" id="t60_63" class="room-t60-input" placeholder="0.0 s" required>
         </div>
         <div class="material-form">
           <label for="125hz">125 Hz</label>
-          <input type="number" min="0" step="0.01" id="t60_125" class="room-t60-input" placeholder="0.0" required>
+          <input type="number" min="0" step="0.01" id="t60_125" class="room-t60-input" placeholder="0.0 s" required>
         </div>
         <div class="material-form">
           <label for="250hz">250 Hz</label>
-          <input type="number" min="0" step="0.01" id="t60_250" class="room-t60-input" placeholder="0.0" required>
+          <input type="number" min="0" step="0.01" id="t60_250" class="room-t60-input" placeholder="0.0 s" required>
         </div>
         <div class="material-form">
           <label for="500hz">500 Hz</label>
-          <input type="number" min="0" step="0.01" id="t60_500" class="room-t60-input" placeholder="0.0" required>
+          <input type="number" min="0" step="0.01" id="t60_500" class="room-t60-input" placeholder="0.0 s" required>
         </div>
       </div>
       <div class="material-1000to8000Hz">
         <div class="material-form">
           <label for="1000hz">1 kHz</label>
-          <input type="number" min="0" step="0.01" id="t60_1000" class="room-t60-input" placeholder="0.0" required>
+          <input type="number" min="0" step="0.01" id="t60_1000" class="room-t60-input" placeholder="0.0 s" required>
         </div>
         <div class="material-form">
           <label for="2000hz">2 kHz</label>
-          <input type="number" min="0" step="0.01" id="t60_2000" class="room-t60-input" placeholder="0.0" required>
+          <input type="number" min="0" step="0.01" id="t60_2000" class="room-t60-input" placeholder="0.0 s" required>
         </div>
         <div class="material-form">
           <label for="4000hz">4 kHz</label>
-          <input type="number" min="0" step="0.01" id="t60_4000" class="room-t60-input" placeholder="0.0" required>
+          <input type="number" min="0" step="0.01" id="t60_4000" class="room-t60-input" placeholder="0.0 s" required>
         </div>
         <div class="material-form">
           <label for="8000hz">8 kHz</label>
-          <input type="number" min="0" step="0.01" id="t60_8000" class="room-t60-input" placeholder="0.0" required>
+          <input type="number" min="0" step="0.01" id="t60_8000" class="room-t60-input" placeholder="0.0 s" required>
         </div>
       </div>
     </div>
@@ -109,6 +112,96 @@
     <div id="addMaterial-btn">
       <a id="thebtn" href="#materials-section">Add Material</a>
     </div>
+
+    <div class="new-material">
+        
+      <header class="new-material-header">
+        <h2 class="material-name">${name}</h2>
+        <a class="material-delete-button" href="#" class="delete">Delete Material</a>
+        <!-- <h3 class="material-input-text">only numbers separated by . (dot)</h3> -->
+      </header>
+
+      <!-- <div class="material-input-area-covered-flex">
+        <div class="area-covered-form">
+          <label for="input-area-covered">area covered (m^2)</label>
+          <div class="material-input-flex">
+            <input type="number" min="0" step="0.1" class="material-input" value="0" placeholder="0" required readonly>
+          </div>
+        </div>
+      </div> -->
+
+      <section class="material-input-flex">
+        <div class="material-input-units-flex">
+          <div class="material-input-units-top">
+            <ul>
+              <li>Hz</li>
+              <li>a</li>
+            </ul>
+          </div>
+          <div>
+            <ul>
+              <li>Hz</li>
+              <li>a</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="material-input-a-flex">
+          <div class="material-63to500Hz">
+            <div class="material-form">
+              <label for="63hz">63</label>
+              <div class="material-input-flex">
+                <input type="number" min="0" step="0.01" class="material-input" value="${a63}" placeholder="0.1" required readonly>
+              </div>
+            </div>
+            <div class="material-form">
+              <label for="125hz">125</label>
+              <div class="material-input-flex">  
+                <input type="number" min="0" step="0.01" class="material-input" value="${a125}" placeholder="0.7" required readonly>
+              </div>
+            </div>
+            <div class="material-form">
+              <label for="250hz">250</label>
+              <div class="material-input-flex">  
+                <input type="number" min="0" step="0.01" class="material-input" value="${a250}" placeholder="0.7" required readonly>
+              </div>
+            </div>
+            <div class="material-form">
+              <label for="500hz">500</label>
+              <div class="material-input-flex"> 
+              <input type="number" min="0" step="0.01" class="material-input" value="${a500}" placeholder="0.7" required readonly>
+            </div>
+            </div>
+          </div>
+          <div class="material-1000to8000Hz">
+            <div class="material-form">
+              <label for="1000hz">1000</label>
+              <div class="material-input-flex"> 
+                <input type="number" min="0" step="0.01" class="material-input" value="${a1k}" placeholder="0.7" required readonly>
+              </div>
+            </div>
+            <div class="material-form">
+              <label for="2000hz">2000</label>
+              <div class="material-input-flex"> 
+                <input type="number" min="0" step="0.01" class="material-input" value="${a2k}" placeholder="0.7" required readonly>
+              </div>
+            </div>
+            <div class="material-form">
+              <label for="4000hz">4000</label>
+              <div class="material-input-flex"> 
+                <input type="number" min="0" step="0.01" class="material-input" value="${a4k}" placeholder="0.7" required readonly>
+              </div>
+            </div>
+            <div class="material-form">
+              <label for="8000hz">8000</label>
+              <div class="material-input-flex"> 
+                <input type="number" min="0" step="0.01" class="material-input" value="${a8k}" placeholder="0.7" required readonly>
+              </div>
+            </div>
+          </div>
+        </div>   
+      
+      </section>
 
   </section>
 

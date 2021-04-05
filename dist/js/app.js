@@ -208,7 +208,7 @@ class Material {
         <header class="new-material-header">
           <h2 class="material-name">${name}</h2>
           <a class="material-delete-button" href="#" class="delete">Delete Material</a>
-          <h3 class="material-input-text">only numbers separeted by . (dot)</h3>
+          <h3 class="material-input-text">only numbers separated by . (dot)</h3>
           </header>
 
         <div class="material-flex">
@@ -272,7 +272,7 @@ const materials = new Material();
 
 // EVENT LISTENERS
 document.getElementById('thebtn').addEventListener('click',function(e) {
-  materials.addMaterial(`${Math.random()}`, 1.5,	1.3,	0.8,	0.7,	0.7,	0.6,	0.5,	0.4);
+  materials.addMaterial(`${Math.random()}`, 0.1,	0.2,	0.3,	0.4,	0.4,	0.3,	0.4,	0.4);
   e.preventDefault();
 }, false);
 
