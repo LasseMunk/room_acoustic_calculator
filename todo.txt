@@ -1,0 +1,7 @@
+- add event listeners pr. material value change
+- add material skal regne corrected value ud
+- absorption array og measured absorption skal update når man ændre i volume m3
+- man må godt kunne skrive i add material, for jeg publisher denne version inden preset
+- save in local storage
+- preset kravstunnel dropdown menu
+- added materials uses , instead of . as separator

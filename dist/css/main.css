@@ -125,10 +125,45 @@ input:focus {
   width: 35%;
 }
 
-#room-dimensions-section #calc-room-dim-container #calculated-m2 {
+#room-dimensions-section #calc-room-dim-container #room-volume {
   font-size: 2rem;
-  padding-bottom: 0.9rem;
+  width: 100%;
+  padding: 1rem;
   text-align: center;
+}
+
+#t60-input-measured-section {
+  border: 1px dashed #ff0000;
+  border-top: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+
+#t60-input-measured-section h2 {
+  font-size: 1.2rem;
+}
+
+.t60-63to500Hz,
+.t60-1000to8000Hz {
+  display: flex;
+  padding-top: 0.75rem;
+}
+
+.t60-form {
+  padding: 0 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.t60-form label,
+.t60-form input {
+  width: 100%;
+  text-align: center;
+  margin: 0 0.75rem;
 }
 
 .new-material {
@@ -162,6 +197,18 @@ input:focus {
   background: #ff0000;
   font-size: 1.2rem;
   font-weight: bold;
+}
+
+.new-material .material-input-area-covered {
+  width: 100%;
+}
+
+.new-material .material-input-area-covered .area-covered-form input {
+  margin-top: 1.5rem;
+  margin-left: 0.5rem;
+  margin-right: 0.25rem;
+  margin-bottom: 1rem;
+  width: 18.5%;
 }
 
 .new-material .material-input-flex {
@@ -210,21 +257,7 @@ input:focus {
 .new-material .material-input-flex .material-input-a-flex .material-form input {
   width: 100%;
   text-align: center;
-  margin: 0 0.75rem;
-}
-
-#input-measured-t60-section {
-  border: 1px dashed #ff0000;
-  border-top: none;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 1rem;
-}
-
-#input-measured-t60-section h2 {
-  font-size: 1.2rem;
+  margin: 0 0.5rem;
 }
 
 #chart-section {

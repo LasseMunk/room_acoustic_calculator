@@ -12,12 +12,16 @@ https://www.researchgate.net/post/Is_there_a_mathematical_formulation_of_the_Sch
 
 /* --- ROOM DIMENSIONS INPUT AND CALC --- */
 
-const room = {
+const room = { // boxed room
   h: 0,
   w: 0,
   l: 0,
   volume: 0,
-  t60: [0, 0, 0, 0, 0, 0, 0, 0]
+  t60_measured: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], // measured decay pr. octave in seconds
+  t60_corrected: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], // result decay pr. octave in sec after added materials
+  a_measured: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], // absorbtion in m2_sab
+  a_materials: [], // array of a_m2_sab values of added materials
+  a_total: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0] // resulting a_m2_sab
 }
 
 const aMaterials = [];
@@ -28,6 +32,12 @@ document.getElementById("room-width")
   .addEventListener('change', function (e) { calculateRoomVolume(e, 'w'); });
 document.getElementById("room-length")
   .addEventListener('change', function (e) { calculateRoomVolume(e, 'l'); });
+
+  document.getElementById("room-volume")
+  .addEventListener('change', function (e) { 
+    room.volume = parseFloat(e.target.value);
+    update_calc_a_measured();
+  });
 
 function calculateRoomVolume (e, dim) {
 
@@ -57,7 +67,7 @@ function calculateRoomVolume (e, dim) {
 
 /* --- T60 INPUT AND CALC --- */ 
 
-document.querySelectorAll('.room-t60-input').forEach(item => {
+document.querySelectorAll('.t60-input').forEach(item => {
   item.addEventListener('change', e => {
     let idAsInt = e.target.id.split("t60_");
     idAsInt = parseInt(idAsInt[1]);
@@ -67,39 +77,64 @@ document.querySelectorAll('.room-t60-input').forEach(item => {
     if (typeof eValueAsFloat === 'number' && eValueAsFloat > 0) {
       switch (idAsInt) {
         case 63:
-          room.t60[0] = parseFloat(e.target.value);
+          room.t60_measured[0] = eValueAsFloat;
+          room.a_measured[0] = calc_a_measured(room.t60_measured[0]);
           break;
         case 125:
-          room.t60[1] = parseFloat(e.target.value);
+          room.t60_measured[1] = eValueAsFloat;
+          room.a_measured[1] = calc_a_measured(room.t60_measured[1]);
           break;
         case 250:
-          room.t60[2] = parseFloat(e.target.value);
+          room.t60_measured[2] = eValueAsFloat;
+          room.a_measured[2] = calc_a_measured(room.t60_measured[2]);
           break;
         case 500:
-          room.t60[3] = parseFloat(e.target.value);
+          room.t60_measured[3] = eValueAsFloat;
+          room.a_measured[3] = calc_a_measured(room.t60_measured[3]);
           break;
         case 1000:
-          room.t60[4] = parseFloat(e.target.value);
+          room.t60_measured[4] = eValueAsFloat;
+          room.a_measured[4] = calc_a_measured(room.t60_measured[4]);
           break;
         case 2000:
-          room.t60[5] = parseFloat(e.target.value);
+          room.t60_measured[5] = eValueAsFloat;
+          room.a_measured[5] = calc_a_measured(room.t60_measured[5]);
           break;
         case 4000:
-          room.t60[6] = parseFloat(e.target.value);
+          room.t60_measured[6] = eValueAsFloat;
+          room.a_measured[6] = calc_a_measured(room.t60_measured[6]);
           break;
         case 8000:
-          room.t60[7] = parseFloat(e.target.value);
+          room.t60_measured[7] = eValueAsFloat;
+          room.a_measured[7] = calc_a_measured(room.t60_measured[7]);
           break;
       }
     } 
     updateGraphMeasured();
-    
   })
 })
 
+function calc_a_measured(sec) {
+  // T = (0.161 * room.volume) / Absorption (in m2_sabine) 
+  // Absorption (in m2_sabine)  = (0.161 * room.volume) / T
+  if(room.volume > 0 && typeof sec === 'number') {
+    let sab = ((0.161 * room.volume) / sec);
+    sab = Math.round(sab * 10) / 10; // round to 1 decimal value
+    return sab;
+  } else { return 0; }
+  
+}
+
 function updateGraphMeasured() {
   for(let i = 0; i < chart.data.datasets[1].data.length; i++) {
-    chart.data.datasets[1].data[i] = room.t60[i];
+    chart.data.datasets[1].data[i] = room.t60_measured[i];
+  }
+  chart.update();
+}
+
+function updateGraphCalculated() {
+  for(let i = 0; i < chart.data.datasets[0].data.length; i++) {
+    chart.data.datasets[0].data[i] = room.t60_corrected[i];
   }
   chart.update();
 }
@@ -186,84 +221,163 @@ const chart = new Chart(ctx, {
 class Material {
   constructor() {
     this.addedMaterials = []; // is array of names
+    this.correctedT60 = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
   }
 
-  // 
-  addMaterial(name, a63, a125, a250, a500, a1k, a2k, a4k, a8k) {
+  calcAbsorption() {
+    // multiply this materials absorbtion coefficient with the area covered by the material
+    // to obtain the amount of absorption pr. octave, for this specific material
+
+    for(let i = 0; i < this.material.aCoeffValues.length; i++){
+      this.material.aCalculatedValues[i] = this.material.aCoeffValues[i] * this.material.a_m2;
+    }
+  }
+
+  calcTotalAbsorption() {
+    const totalA = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
+    
+    for(let i = 0; i < this.addedMaterials.length; i++) {
+      for(let j = 0; j < this.addedMaterials[i].aCalculatedValues.length; j++) {
+        totalA[j] += this.addedMaterials[i].aCalculatedValues[j];
+      }
+    }
+
+    for(let i = 0; i < totalA.length; i++) {
+      // Sabines formula
+      room.t60_corrected[i] = (0.161 * room.volume) / totalA[i];
+    }
+  }
+
+  addMaterial(name, a_m2, a63, a125, a250, a500, a1k, a2k, a4k, a8k) {
     const matSection = document.getElementById("materials-section");
 
-    this.material = [name, a63, a125, a250, a500, a1k, a2k, a4k, a8k];
-    
-
+    this.material = { 
+      name: name,
+      a_m2: a_m2,
+      aCoeffValues: [a63, a125, a250, a500, a1k, a2k, a4k, a8k],
+      aCalculatedValues: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+    }
+    this.calcAbsorption();
     const section = document.createElement('section');
 
     if(typeof name === 'string') {
       const now = new Date();
       section.id = `${name}_${now.getHours()}${now.getMinutes()}${now.getSeconds()}`; // give unique identifier
-      this.material[0] = section.id;
+      this.material.name = section.id;
 
       section.innerHTML = `
-      <div class="new-material">
-        
+        <section id=${section.id} class="new-material">
+            
         <header class="new-material-header">
-          <h2 class="material-name">${name}</h2>
-          <a class="material-delete-button" href="#" class="delete">Delete Material</a>
-          <h3 class="material-input-text">only numbers separated by . (dot)</h3>
-          </header>
+          <h2 class="material-name">${this.material.name}</h2>
+          <a class="material-delete-button" href="#">Delete Material</a>
+        </header>
 
-        <div class="material-flex">
-          <div class="material-63to500Hz">
-            <div class="material-form">
-              <label for="63hz">63 Hz</label>
-              <input type="number" min="0" step="0.01" class="material-input" value="${a63}" required readonly>
+        <section class="material-input-area-covered">
+          <div class="area-covered-form">
+            <input type="number" min="0" step="0.1" class="area-covered-input" value="${this.material.a_m2}" placeholder="0" required>
+            <label for="input-area-covered">m^2 covered by material</label>
+          </div>
+        </section>
+
+        <section class="material-input-flex">
+          <div class="material-input-units-flex">
+            <div class="material-input-units-top">
+              <ul>
+                <li>Hz</li>
+                <li>a</li>
+              </ul>
             </div>
-            <div class="material-form">
-              <label for="125hz">125 Hz</label>
-              <input type="number" min="0" step="0.01" class="material-input" value="${a125}" required readonly>
-            </div>
-            <div class="material-form">
-              <label for="250hz">250 Hz</label>
-              <input type="number" min="0" step="0.01" class="material-input" value="${a250}" required readonly>
-            </div>
-            <div class="material-form">
-              <label for="500hz">500 Hz</label>
-              <input type="number" min="0" step="0.01" class="material-input" value="${a500}" required readonly>
+            <div>
+              <ul>
+                <li>Hz</li>
+                <li>a</li>
+              </ul>
             </div>
           </div>
-          <div class="material-1000to8000Hz">
-            <div class="material-form">
-              <label for="1000hz">1 kHz</label>
-              <input type="number" min="0" step="0.01" class="material-input" value="${a1k}" required readonly>
+          
+          <div class="material-input-a-flex">
+            <div class="material-63to500Hz">
+              <div class="material-form">
+                <label for="63hz">63</label>
+                <div class="material-input-flex">
+                  <input type="number" min="0" step="0.01" class="material-input" value="${this.material.aCoeffValues[0]}" placeholder="0.1" required>
+                </div>
+              </div>
+              <div class="material-form">
+                <label for="125hz">125</label>
+                <div class="material-input-flex">  
+                  <input type="number" min="0" step="0.01" class="material-input" value="${this.material.aCoeffValues[1]}" placeholder="0.7" required>
+                </div>
+              </div>
+              <div class="material-form">
+                <label for="250hz">250</label>
+                <div class="material-input-flex">  
+                  <input type="number" min="0" step="0.01" class="material-input" value="${this.material.aCoeffValues[2]}" placeholder="0.7" required>
+                </div>
+              </div>
+              <div class="material-form">
+                <label for="500hz">500</label>
+                <div class="material-input-flex"> 
+                <input type="number" min="0" step="0.01" class="material-input" value="${this.material.aCoeffValues[3]}" placeholder="0.7" required>
+              </div>
+              </div>
             </div>
-            <div class="material-form">
-              <label for="2000hz">2 kHz</label>
-              <input type="number" min="0" step="0.01" class="material-input" value="${a2k}" required readonly>
+            <div class="material-1000to8000Hz">
+              <div class="material-form">
+                <label for="1000hz">1000</label>
+                <div class="material-input-flex"> 
+                  <input type="number" min="0" step="0.01" class="material-input" value="${this.material.aCoeffValues[4]}" placeholder="0.7" required>
+                </div>
+              </div>
+              <div class="material-form">
+                <label for="2000hz">2000</label>
+                <div class="material-input-flex"> 
+                  <input type="number" min="0" step="0.01" class="material-input" value="${this.material.aCoeffValues[5]}" placeholder="0.7" required>
+                </div>
+              </div>
+              <div class="material-form">
+                <label for="4000hz">4000</label>
+                <div class="material-input-flex"> 
+                  <input type="number" min="0" step="0.01" class="material-input" value="${this.material.aCoeffValues[6]}" placeholder="0.7" required>
+                </div>
+              </div>
+              <div class="material-form">
+                <label for="8000hz">8000</label>
+                <div class="material-input-flex"> 
+                  <input type="number" min="0" step="0.01" class="material-input" value="${this.material.aCoeffValues[7]}" placeholder="0.7" required>
+                </div>
+              </div>
             </div>
-            <div class="material-form">
-              <label for="4000hz">4 kHz</label>
-              <input type="number" min="0" step="0.01" class="material-input" value="${a4k}" required readonly>
-            </div>
-            <div class="material-form">
-              <label for="8000hz">8 kHz</label>
-              <input type="number" min="0" step="0.01" class="material-input" value="${a8k}" required readonly>
-            </div>
-          </div>
-        </div>   
-      </div>
-      `;
+          </div>   
+        
+        </section>
+      </section>
+    `;
 
-      
-      // this.addedMaterials.push(this.material);
-
+      this.addedMaterials.push(this.material); // save this material in addedMaterials[]
+      this.calcTotalAbsorption();
       matSection.appendChild(section);
     } else {console.log('name is not a string');}
   }
 
   deleteMaterial(target) {
-    if(target.className === 'delete') {
+    let nameOfMaterial = '';
+
+    if(target.className === 'material-delete-button') {
       // link > header > div
+      nameOfMaterial = target.parentElement.parentElement.id;
       target.parentElement.parentElement.remove();
     }
+    
+    for(let i = 0; i < this.addedMaterials.length; i++) {
+      if(this.addedMaterials[i].name === nameOfMaterial) {
+        this.addedMaterials.splice(i, 1);
+      } 
+    }
+      
+    this.calcTotalAbsorption();
+    // update local storage
   }
 }
 
@@ -272,11 +386,11 @@ const materials = new Material();
 
 // EVENT LISTENERS
 document.getElementById('thebtn').addEventListener('click',function(e) {
-  materials.addMaterial(`${Math.random()}`, 0.1,	0.2,	0.3,	0.4,	0.4,	0.3,	0.4,	0.4);
+  materials.addMaterial(`Rockwool`, 10, 0.1,	0.2,	0.3,	0.4,	0.5,	0.6,	0.7,	0.8);
   e.preventDefault();
 }, false);
 
 document.querySelector('#materials-section').addEventListener('click', function(e) {
-  materials.deleteMaterial(e.target);
+  materials.deleteMaterial(e.target); 
   e.preventDefault();
 })
