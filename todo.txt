@@ -1,5 +1,9 @@
 - update calculated graph when deleting material
-- udpdate calculated graph when changing volume, room h/w/l, measured t60 vals
+- udpdate calculated graph when changing 
+  - room.volume 
+  - room h/w/l
+  - measured t60 vals 
+  - change m2 of added material
 - absorption array og measured absorption skal update når man ændre i volume m3
 - man må godt kunne skrive i add material, for jeg publisher denne version inden preset
 - save in local storage
