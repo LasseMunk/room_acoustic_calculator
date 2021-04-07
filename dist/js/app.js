@@ -19,9 +19,8 @@ const room = { // boxed room
   volume: 0,
   t60_measured: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], // measured decay pr. octave in seconds
   t60_corrected: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], // result decay pr. octave in sec after added materials
-  a_measured: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], // absorbtion in m2_sab
-  a_materials: [], // array of a_m2_sab values of added materials
-  a_total: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0] // resulting a_m2_sab
+  a_measured: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], // array of a_m2_sab values of added materials
+  a_addedMaterials: [], // array of a_m2_sab values of added materials
 }
 
 const aMaterials = [];
@@ -36,7 +35,12 @@ document.getElementById("room-length")
   document.getElementById("room-volume")
   .addEventListener('change', function (e) { 
     room.volume = parseFloat(e.target.value);
-    update_calc_a_measured();
+    
+    document.getElementById("room-height").value = 0;
+    document.getElementById("room-width").value = 0;
+    document.getElementById("room-length").value = 0;
+
+    // updateGraphMeasured();
   });
 
 function calculateRoomVolume (e, dim) {
@@ -58,10 +62,10 @@ function calculateRoomVolume (e, dim) {
   } 
   if (room.volume > 5) {
     room.volume = room.volume.toFixed(2);
-    document.getElementById("calculated-m2").innerHTML = `${room.volume}`;
+    document.getElementById("room-volume").value = `${room.volume}`;
     return room.volume;
   } else {
-    document.getElementById("calculated-m2").innerHTML = `Check values`;
+    document.getElementById("room-volume").innerHTML = `Check values`;
   }
 }
 
@@ -114,15 +118,19 @@ document.querySelectorAll('.t60-input').forEach(item => {
   })
 })
 
+function roundTo1dec(x) {
+  let result = Math.round(x * 10) / 10;
+  return result;
+}
+
 function calc_a_measured(sec) {
   // T = (0.161 * room.volume) / Absorption (in m2_sabine) 
   // Absorption (in m2_sabine)  = (0.161 * room.volume) / T
   if(room.volume > 0 && typeof sec === 'number') {
     let sab = ((0.161 * room.volume) / sec);
-    sab = Math.round(sab * 10) / 10; // round to 1 decimal value
+    //sab = roundTo1dec(sab); // round to 1 decimal value
     return sab;
   } else { return 0; }
-  
 }
 
 function updateGraphMeasured() {
@@ -134,7 +142,7 @@ function updateGraphMeasured() {
 
 function updateGraphCalculated() {
   for(let i = 0; i < chart.data.datasets[0].data.length; i++) {
-    chart.data.datasets[0].data[i] = room.t60_corrected[i];
+    chart.data.datasets[0].data[i] = roundTo1dec(room.t60_corrected[i]);
   }
   chart.update();
 }
@@ -219,10 +227,6 @@ const chart = new Chart(ctx, {
 /* --- MATERIALS SECTION --- */
 
 class Material {
-  constructor() {
-    this.addedMaterials = []; // is array of names
-    this.correctedT60 = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
-  }
 
   calcAbsorption() {
     // multiply this materials absorbtion coefficient with the area covered by the material
@@ -236,13 +240,16 @@ class Material {
   calcTotalAbsorption() {
     const totalA = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
     
-    for(let i = 0; i < this.addedMaterials.length; i++) {
-      for(let j = 0; j < this.addedMaterials[i].aCalculatedValues.length; j++) {
-        totalA[j] += this.addedMaterials[i].aCalculatedValues[j];
+    for(let i = 0; i < room.a_addedMaterials.length; i++) {
+      for(let j = 0; j < room.a_addedMaterials[i].aCalculatedValues.length; j++) {
+        totalA[j] += room.a_addedMaterials[i].aCalculatedValues[j];
       }
     }
 
+    
     for(let i = 0; i < totalA.length; i++) {
+      // add measured a_sab pr. octave to totalA pr. octave
+      totalA[i] = totalA[i] + room.a_measured[i];
       // Sabines formula
       room.t60_corrected[i] = (0.161 * room.volume) / totalA[i];
     }
@@ -355,10 +362,14 @@ class Material {
       </section>
     `;
 
-      this.addedMaterials.push(this.material); // save this material in addedMaterials[]
+      room.a_addedMaterials.push(this.material); // save this material in addedMaterials[]
       this.calcTotalAbsorption();
+      updateGraphCalculated();
       matSection.appendChild(section);
     } else {console.log('name is not a string');}
+    
+    console.log(this.material.aCalculatedValues);
+    console.log(room);
   }
 
   deleteMaterial(target) {
@@ -370,9 +381,9 @@ class Material {
       target.parentElement.parentElement.remove();
     }
     
-    for(let i = 0; i < this.addedMaterials.length; i++) {
-      if(this.addedMaterials[i].name === nameOfMaterial) {
-        this.addedMaterials.splice(i, 1);
+    for(let i = 0; i < room.a_addedMaterials.length; i++) {
+      if(room.a_addedMaterials[i].name === nameOfMaterial) {
+        room.a_addedMaterials.splice(i, 1);
       } 
     }
       
@@ -386,7 +397,7 @@ const materials = new Material();
 
 // EVENT LISTENERS
 document.getElementById('thebtn').addEventListener('click',function(e) {
-  materials.addMaterial(`Rockwool`, 10, 0.1,	0.2,	0.3,	0.4,	0.5,	0.6,	0.7,	0.8);
+  materials.addMaterial(`Rockwool`, 10, 0.1,	0.1,	0.1,	0.1,	0.1,	0.1,	0.1,	0.1);
   e.preventDefault();
 }, false);
 
